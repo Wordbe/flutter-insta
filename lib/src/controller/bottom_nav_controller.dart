@@ -1,9 +1,11 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_instagram/src/components/message_popup.dart';
 import 'package:flutter_instagram/src/pages/upload.dart';
 import 'package:get/get.dart';
 
-enum PageName {
-  HOME, SEARCH, UPLOAD, ACTIVITY, MYPAGE
-}
+enum PageName { HOME, SEARCH, UPLOAD, ACTIVITY, MYPAGE }
 
 class BottomNavController extends GetxController {
   RxInt pageIndex = 0.obs;
@@ -34,6 +36,16 @@ class BottomNavController extends GetxController {
 
   Future<bool> willPopAction() async {
     if (bottomHistory.length == 1) {
+      showDialog(
+          context: Get.context!,
+          builder: (context) => MessagePopup(
+                title: '시스템',
+                message: '종료하시겠습니까?',
+                okCallback: () {
+                  exit(0);
+                },
+                cancelCallback: Get.back,
+              ));
       return true;
     } else {
       bottomHistory.removeLast();
