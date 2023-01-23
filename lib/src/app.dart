@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram/src/controller/bottom_nav_controller.dart';
 import 'package:flutter_instagram/src/pages/home.dart';
+import 'package:flutter_instagram/src/pages/search.dart';
 import 'package:get/get.dart';
 
 import 'components/image_data.dart';
@@ -18,9 +19,7 @@ class App extends GetView<BottomNavController> {
               index: controller.pageIndex.value,
               children: [
                 const Home(),
-                Container(
-                  child: Center(child: Text('SEARCH')),
-                ),
+                const Search(),
                 Container(
                   child: Center(child: Text('UPLOAD')),
                 ),

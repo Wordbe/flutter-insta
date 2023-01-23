@@ -15,9 +15,9 @@ class PostWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(),
-          const SizedBox(height: 15),
+          const SizedBox(height: 5),
           _image(),
-          const SizedBox(height: 15),
+          const SizedBox(height: 5),
           _reaction(),
           const SizedBox(height: 5),
           _description(),
