@@ -59,9 +59,7 @@ class PostWidget extends StatelessWidget {
   }
 
   Widget _image() {
-    return CachedNetworkImage(
-        imageUrl:
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxW0Eeqrx-s7nIpo0PFP_xfop_cKlmqI28fQ&usqp=CAU');
+    return CachedNetworkImage(imageUrl: 'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg');
   }
 
   Widget _reaction() {

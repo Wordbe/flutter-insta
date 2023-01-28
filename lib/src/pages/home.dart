@@ -68,7 +68,7 @@ class Home extends StatelessWidget {
     return Column(
       children: List.generate(
         50,
-        (index) => PostWidget(),
+        (index) => const PostWidget(),
       ).toList(),
     );
   }
