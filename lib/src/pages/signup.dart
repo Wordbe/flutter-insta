@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram/src/controller/auth_controller.dart';
 import 'package:flutter_instagram/src/model/instagram_user.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Signup extends StatefulWidget {
   final String uid;
@@ -14,6 +17,8 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   TextEditingController nicknameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  XFile? thumbnailXFile;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +51,7 @@ class _SignupState extends State<Signup> {
               nickname: nicknameController.text,
               description: descriptionController.text,
             );
-            AuthController.to.signup(signupUser);
+            AuthController.to.signup(signupUser, thumbnailXFile);
           },
           child: const Text('회원가입'),
         ),
@@ -62,15 +67,23 @@ class _SignupState extends State<Signup> {
           child: SizedBox(
             width: 100,
             height: 100,
-            child: Image.asset(
-              'assets/images/default_image.png',
-              fit: BoxFit.cover,
-            ),
+            child: thumbnailXFile == null
+                ? Image.asset(
+                    'assets/images/default_image.png',
+                    fit: BoxFit.cover,
+                  )
+                : Image.file(
+                    File(thumbnailXFile!.path),
+                    fit: BoxFit.cover,
+                  ),
           ),
         ),
         const SizedBox(height: 5),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            thumbnailXFile = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 100);
+            update();
+          },
           child: const Text('이미지 변경'),
         ),
       ],
@@ -102,4 +115,6 @@ class _SignupState extends State<Signup> {
       ),
     );
   }
+
+  void update() => setState(() {});
 }

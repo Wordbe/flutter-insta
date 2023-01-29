@@ -2,22 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_instagram/src/components/avatar_widget.dart';
 import 'package:flutter_instagram/src/components/image_data.dart';
 import 'package:flutter_instagram/src/components/user_card.dart';
+import 'package:flutter_instagram/src/controller/mypage_controller.dart';
+import 'package:get/get.dart';
 
-class MyPage extends StatefulWidget {
+class MyPage extends GetView<MypageController> {
   const MyPage({Key? key}) : super(key: key);
-
-  @override
-  State<MyPage> createState() => _MyPageState();
-}
-
-class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
-  late TabController tabController;
-
-  @override
-  void initState() {
-    super.initState();
-    tabController = TabController(length: 2, vsync: this);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +14,14 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: const Text(
-          'dev_man',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.black,
+        title: Obx(
+          () => Text(
+            controller.targetUser.value.nickname!,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.black,
+            ),
           ),
         ),
         actions: [
@@ -71,39 +62,40 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
   Widget _profile() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            children: [
-              AvatarWidget(
-                thumbnailPath:
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRK5HErGV-n_nrGoUmc4gubEbikn3YkhhKQZT-xcB5g23Aw7taTb1tttwh4kLGNULX5bUg&usqp=CAU',
-                type: AvatarType.TYPE3,
-                size: 80,
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(child: _statistics('게시물', 119)),
-                    Expanded(child: _statistics('팔로워', 341)),
-                    Expanded(child: _statistics('팔로잉', 449)),
-                  ],
+      child: Obx(
+        () => Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                AvatarWidget(
+                  thumbnailPath: controller.targetUser.value.thumbnail!,
+                  type: AvatarType.TYPE3,
+                  size: 80,
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          const Text(
-            '요즘들어 더 열심히 개발하는 남자',
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.black,
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(child: _statistics('게시물', 119)),
+                      Expanded(child: _statistics('팔로워', 341)),
+                      Expanded(child: _statistics('팔로잉', 449)),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 30),
+            Text(
+              controller.targetUser.value.description!,
+              style: const TextStyle(
+                fontSize: 13,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -218,7 +210,7 @@ class _MyPageState extends State<MyPage> with TickerProviderStateMixin {
 
   Widget _tabMenu() {
     return TabBar(
-      controller: tabController,
+      controller: controller.tabController,
       indicatorColor: Colors.black,
       indicatorWeight: 1,
       tabs: [
