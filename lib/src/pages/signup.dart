@@ -1,8 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_instagram/src/controller/auth_controller.dart';
+import 'package:flutter_instagram/src/model/instagram_user.dart';
 
-class Signup extends StatelessWidget {
-  const Signup({Key? key}) : super(key: key);
+class Signup extends StatefulWidget {
+  final String uid;
+
+  const Signup({Key? key, required this.uid}) : super(key: key);
+
+  @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+  TextEditingController nicknameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +31,24 @@ class Signup extends StatelessWidget {
             const SizedBox(height: 30),
             _avatar(),
             const SizedBox(height: 30),
-            // _nickname(),
+            _nickname(),
+            const SizedBox(height: 30),
+            _description(),
           ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
+        child: ElevatedButton(
+          onPressed: () {
+            var signupUser = InstagramUser(
+              uid: widget.uid,
+              nickname: nicknameController.text,
+              description: descriptionController.text,
+            );
+            AuthController.to.signup(signupUser);
+          },
+          child: const Text('회원가입'),
         ),
       ),
     );
@@ -50,5 +77,29 @@ class Signup extends StatelessWidget {
     );
   }
 
-  // Widget _nickname() {}
+  Widget _nickname() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: TextField(
+        controller: nicknameController,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(10),
+          hintText: '닉네임',
+        ),
+      ),
+    );
+  }
+
+  Widget _description() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 50),
+      child: TextField(
+        controller: descriptionController,
+        decoration: const InputDecoration(
+          contentPadding: EdgeInsets.all(10),
+          hintText: '설명',
+        ),
+      ),
+    );
+  }
 }
